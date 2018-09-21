@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by CZWWBK on 9/19/2018.
@@ -16,7 +17,7 @@ public class StationService {
     StationRepository stationRepository;
 
     public List<Station> getAll(){
-        return (List<Station>)stationRepository.findAll();
+        return (List<Station>) stationRepository.findAll();
     }
 
     public Station getById(String stationId){
@@ -32,25 +33,26 @@ public class StationService {
     }
 
     public Station add(Station station){
-        Station existStation = stationRepository.findByStationId(station.getStationId());
-        //station already exist, return null
-        if(existStation != null){
-            return null;
+        if(station != null) {
+            Station existStations = stationRepository.findByStationId(station.getStationId());
+            if (existStations == null) {
+                return stationRepository.save(station);
+            }
         }
-        return stationRepository.save(station);
+        return null;
     }
 
     public void delete(String stationId){
         stationRepository.deleteByStationId(stationId);
     }
 
-    public Station update(String stationId, Station station){
-        Station addedStation = stationRepository.findByStationId(stationId);
-        if(addedStation != null){
-            station.setStationId(stationId);
-            stationRepository.save(station);
+    public Station update(String id, Station station){
+        Station updateStation = stationRepository.findByStationId(id);
+        if(updateStation != null){
+            station.setStationId(id);
+            return stationRepository.save(station);
         }
-        return addedStation;
+        return null;
     }
 
 }

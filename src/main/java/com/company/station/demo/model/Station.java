@@ -16,8 +16,6 @@ import java.io.Serializable;
 @Getter @Setter @NoArgsConstructor
 public class Station implements Serializable{
     @Id
-    @GeneratedValue
-    private Long id;
     private String stationId;
     private String name;
     private Boolean hdEnabled;

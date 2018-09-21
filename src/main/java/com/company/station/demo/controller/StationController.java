@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * Created by CZWWBK on 9/19/2018.
@@ -23,13 +22,11 @@ public class StationController {
     @PostMapping("/stations")
     public ResponseEntity<Object> createStation(@RequestBody Station station){
         Station savedStation = stationService.add(station);
+        //return 204 if not saved successfully
         if(savedStation == null){
             return ResponseEntity.noContent().build();
         }
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(
-                "/{id}").buildAndExpand(savedStation.getStationId()).toUri();
-
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity(savedStation, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/stations")
@@ -37,9 +34,10 @@ public class StationController {
         stationService.delete(stationId);
     }
 
-    @PutMapping("/stations/{stationId}")
-    public ResponseEntity<Void> updateStation(@PathVariable String stationId, @RequestBody Station station){
-        Station updatedStation = stationService.update(stationId, station);
+    @PutMapping("/stations/{id}")
+    public ResponseEntity<Object> updateStation(@PathVariable("id") String id, @RequestBody Station station){
+        Station updatedStation = stationService.update(id, station);
+        //return not 404 if stationId not found
         if(updatedStation == null){
             return ResponseEntity.notFound().build();
         }
@@ -55,7 +53,6 @@ public class StationController {
     public ResponseEntity<Station> retrieveStationsById(@PathVariable("stationId") String stationId){
         return new ResponseEntity(stationService.getById(stationId), HttpStatus.OK);
     }
-
     @GetMapping("/stations/name/{name}")
     public ResponseEntity<List<Station>> retrieveStationsByName(@PathVariable("name") String name){
         return new ResponseEntity(stationService.getByName(name), HttpStatus.OK);
@@ -65,5 +62,4 @@ public class StationController {
     public ResponseEntity<List<Station>> retrieveHdEnabledStations(@RequestParam Boolean hdEnabled){
         return new ResponseEntity(stationService.getByHdStatus(hdEnabled), HttpStatus.OK);
     }
-
 }
