@@ -8,7 +8,7 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 /**
- * Created by CZWWBK on 9/18/2018.
+ * Created by Shawn Li on 9/18/2018.
  */
 @Configuration
 @EnableSwagger2
@@ -17,7 +17,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.company.station.demo.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

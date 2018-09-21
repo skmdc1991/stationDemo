@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
- * Created by CZWWBK on 9/18/2018.
+ * Created by Shawn Li on 9/18/2018.
  */
 @Entity
 @Getter @Setter @NoArgsConstructor
